@@ -410,7 +410,7 @@ desired effect
               </form>
             </div>
             <div class="box-footer clearfix">
-              <button type="button" class="pull-right btn btn-default" id="sendEmail">Filter
+              <button type="button" class="pull-right btn btn-default" id="filter">Filter
                 <i class="fa fa-arrow-circle-right"></i></button>
             </div>
           </div>
@@ -704,7 +704,30 @@ desired effect
 		new Awesomplete(document.querySelector("#loannumber"),{ list: list });
 	};
 	ajax2.send();
-	  
+
+	$( "#filter" ).click(function() {
+		  
+		  var loannum = $('#loannumber').val();
+		  var userid = $('#userid').val();
+		  var searchUrlBuilder = '../docview/search/';
+		  //var searchUrlBuilder = '../docview/search/findByLoanNumber?loannumber=1';
+			if(loannum=='' && userid==''){	
+				searchUrlBuilder = '../docview'			
+		  }else if(loannum==''){
+			  searchUrlBuilder = searchUrlBuilder + 'findByUserName?name=' + userid;
+		  } else if(userid==''){
+			  searchUrlBuilder = searchUrlBuilder + 'findByLoanNumber?loannumber=' + loannum;
+		  } else {
+			  searchUrlBuilder = searchUrlBuilder + 'findByUserNameAndLoanNumber?loannumber=' + loannum + '&name=' + userid;
+		  }
+		  
+		  var tb = $('#example2').DataTable();
+		  //tb.ajax.url( '../docview/search/findByLoanNumber?loannumber=1' ).load(function(json){
+		  tb.ajax.url( searchUrlBuilder ).load(function(json){
+			  debugger;
+			  return json._embedded.docview;
+		  });
+		});
 	  
     $("#example1").DataTable();
     $('#example2').DataTable( {

@@ -16,7 +16,7 @@ public interface DocViewRepository extends PagingAndSortingRepository<DocView, L
 	
 	List<DocView> findByLoanNumber(@Param("loannumber") String loannumber);
 	
-	List<DocView> findByUserNameAndLoanNumber(@Param("username") String username, @Param("loannumber") String loannumber);
+	List<DocView> findByUserNameAndLoanNumber(@Param("name") String name, @Param("loannumber") String loannumber);
 	
 	@Query("Select d from DocView d where d.userName = 'ivan'")
     public List<DocView> findUsersList();
