@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+<title>Flagstar Bank : Mortgage Application : Task Search</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{css/jquery.dataTables.min.css}" />
+<script type="text/javascript" th:src="@{js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{js/jquery.blockUI.js}"></script>
+<script type="text/javascript" th:src="@{js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{js/fsb.taskslist.js}"></script>
+
+</head>
+<body>
+
+
+	<form action="#" id='loanNumberForm' th:action="@{/taskslist}"
+		th:object="${taskrequest}" method="post">
+		<p>
+			Loan Number: <input type="text" id="loanNumber"
+				th:field="*{loanNumber}" /> <input id="block" value="Submit"
+				type="button" />
+		</p>
+	</form>
+
+	<div th:if="${not #lists.isEmpty(workitems)}">
+
+		<table id="myTable" class="display" cellspacing="0" width="100%"
+			style="display: none">
+			<thead>
+				<tr>
+					<th>Loan Number</th>
+					<th>Borrower Name</th>
+					<th>Lender ID</th>
+					<th>Role</th>
+					<th>In-Basket</th>
+					<th>Assigned To</th>
+					<th>Step Entry Time</th>
+					<th>Task Name</th>
+					<th>Step Name</th>
+					<th>Underwriter</th>
+					<th>Product</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="workitem : ${workitems}">
+					<!-- link is for phase 2 
+					<td> 
+						<a href="#" th:onclick="'top.window.location.href=\'' + ${workitem.navigatorUrl} + '\''"><span th:text="${workitem.loanNumber}">Loan Number</span></a>
+					</td>
+					 -->
+					<td th:text="${workitem.loanNumber}">Borrower Name</td>
+					
+					<td th:text="${workitem.borrowerName}">Borrower Name</td>
+					<td th:text="${workitem.lenderId}">Lender ID</td>
+					<td th:text="${workitem.role}">Role</td>
+					<td th:text="${workitem.inbasket}">In-Basket</td>
+					<td>
+						<a th:href="'IM:' + ${workitem.assignedTo} + '@flagstar.com'"
+						th:if="${workitem.assignedTo} != '(NONE)'"><span th:text="${workitem.assignedTo}">Assigned To</span></a>
+					</td>										
+					<td th:text="${#dates.format(workitem.stepEntryTime, 'MM/dd/yyyy hh:mm:ss a')}">Step Entry Time</td>
+					<td th:text="${workitem.taskName}">Step Name</td>
+					<td th:text="${workitem.stepName}">Step Name</td>
+					<td th:text="${workitem.underwriter}">Underwriter</td>
+					<td th:text="${workitem.product}">Product</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>	
+
+</body>
+</html>
