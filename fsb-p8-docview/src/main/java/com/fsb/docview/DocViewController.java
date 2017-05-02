@@ -1,19 +1,22 @@
 package com.fsb.docview;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fsb.docview.model.DocView;
 import com.fsb.docview.repository.PersonRepository;
 
 //@RestController
@@ -22,27 +25,62 @@ import com.fsb.docview.repository.PersonRepository;
 public class DocViewController {
 	@Autowired
 	private PersonRepository personRepository;
-	
+
+	@Autowired
+	private EntityManager em;
+
 	private static final Logger logger = LoggerFactory.getLogger(DocViewController.class);
 
-	@RequestMapping("/greeting")
-	public ModelAndView greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
-		ModelAndView modelAndView = new ModelAndView("greeting");
-		modelAndView.addObject("name", name);
+	@RequestMapping(value = "/keepalive.jsp", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String keepAlive() {
+		return "keep alive page";
+	}
 
-		return modelAndView;
+	@RequestMapping(value = "/service/getuniqueusers", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<DocView> getUniqueUsers() {
+		logger.info("dash/service/getuniqueusers API request received");
+
+
+		try {
+			Query query = em.createQuery("Select DISTINCT(d.userName) from DocView d");
+			List<String> list = query.getResultList();
+			
+			List<DocView> userList = new ArrayList<DocView>();
+												
+			for (String e : list) {
+				DocView dv = new DocView();
+				dv.setUserName(e);
+				userList.add(dv);
+			}
+			return userList;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	
+	@RequestMapping(value = "/service/getuniqueuloans", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<String> getUniqueLoans() {
+		logger.info("dash/service/getuniqueusers API request received");
+
+
+		try {
+			Query query = em.createQuery("Select DISTINCT(d.loanNumber) from DocView d");
+			List<String> list = query.getResultList();
+			
+			
+			for (String e : list) {
+				System.out.println("user name :" + e);
+			}
+			return list;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
-	@GetMapping("/dvdashboard")
-	public ModelAndView getDVDashboard(){
-		logger.info("dv dashboard...");
-		ModelAndView modelAndView = new ModelAndView("dashboard");
-		modelAndView.addObject("loanNumber", "");
-		return modelAndView;
-	}
-
+	
 	@RequestMapping(value = "/count", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, String> getHome() {
+	public @ResponseBody Map<String, String> getHome() {
 		logger.info("Api request received");
 
 		Map<String, String> response = new HashMap<String, String>();
@@ -56,40 +94,4 @@ public class DocViewController {
 		return response;
 	}
 
-	// this is get to load the initial page for user to entery parameters
-    @GetMapping("/taskslist")
-    public String getTaskslist(final Model model)
-    {
-        // check the cache date, refresh stored cached value if it's > 1 day
-        /*
-         * web server gets rebooted every night, so this is prob not necessary if
-         * (LocalDateTime.now().isAfter(cachedDate.plusDays(1))) { logger.info("reset cached wob");
-         * vwp.setCachedWorkItemVObyFolderGUID(new HashMap<String, WorkItemVO>()); this.cachedDate =
-         * LocalDateTime.now(); }
-         */
-
-        // initialize param from CM_PROPERTIES, pull DS from jboss
-
-        //logger.info("do we have url? " + tasksListProperties.getUri());
-    	logger.info("get task list");
-        /*-
-        if (tasksListProperties.getUri().equals(""))
-        {
-            try
-            {
-                logger.info("do db lookup for param values");
-                tasksListProperties = dataSourceHelper.doDataSourceLookup(tasksListProperties);
-            }
-            catch (SQLException e)
-            { // TODO Auto-generated catch block
-                logger.error(e.getMessage());
-                // TODO: need to return an error page
-            }
-        }
-        */
-
-        model.addAttribute("loanNumber", "12345");
-        return "dashboard";
-    }
-	
 }

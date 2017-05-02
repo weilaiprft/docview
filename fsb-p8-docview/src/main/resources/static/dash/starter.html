@@ -689,9 +689,9 @@ desired effect
 	
 	var ajax = new XMLHttpRequest();
 	
-	ajax.open("GET", "https://restcountries.eu/rest/v1/lang/fr", true);
+	ajax.open("GET", "../service/getuniqueusers", true);
 	ajax.onload = function() {
-		var list = JSON.parse(ajax.responseText).map(function(i) { return i.name; });	  	
+		var list = JSON.parse(ajax.responseText).map(function(i) { return i.userName; });	  	
 		new Awesomplete(document.querySelector("#userid"),{ list: list });
 	};
 	ajax.send();
