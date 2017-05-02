@@ -22,5 +22,6 @@ public interface DocViewRepository extends PagingAndSortingRepository<DocView, L
     public List<DocView> findUsersList();
 
 	List<DocView> findDistinctDocViewByUserNameNotIn(@Param("name") String names);
+	
 		
 }

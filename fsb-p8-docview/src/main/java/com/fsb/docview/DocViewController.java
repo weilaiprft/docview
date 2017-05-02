@@ -1,20 +1,17 @@
 package com.fsb.docview;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fsb.docview.repository.PersonRepository;
@@ -25,7 +22,7 @@ import com.fsb.docview.repository.PersonRepository;
 public class DocViewController {
 	@Autowired
 	private PersonRepository personRepository;
-
+	
 	private static final Logger logger = LoggerFactory.getLogger(DocViewController.class);
 
 	@RequestMapping("/greeting")
