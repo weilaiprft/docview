@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fsb.docview.model.DocView;
+import com.fsb.docview.repository.DocViewRepository;
 import com.fsb.docview.repository.PersonRepository;
 
 //@RestController
@@ -25,6 +26,9 @@ import com.fsb.docview.repository.PersonRepository;
 public class DocViewController {
 	@Autowired
 	private PersonRepository personRepository;
+	
+	@Autowired
+	private DocViewRepository docViewRepository;
 
 	@Autowired
 	private EntityManager em;
@@ -39,7 +43,6 @@ public class DocViewController {
 	@RequestMapping(value = "/service/getuniqueusers", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<DocView> getUniqueUsers() {
 		logger.info("dash/service/getuniqueusers API request received");
-
 
 		try {
 			Query query = em.createQuery("Select DISTINCT(d.userName) from DocView d");
@@ -86,6 +89,22 @@ public class DocViewController {
 		Map<String, String> response = new HashMap<String, String>();
 		try {
 			response.put("count", String.valueOf(personRepository.count()));
+		} catch (Exception e) {
+			logger.error("Error occurred while trying to process api request", e);
+			response.put("status", "fail");
+		}
+
+		return response;
+	}
+	
+	@RequestMapping(value = "/testimp", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Map<String, String> getTestImp() {
+		logger.info("Test Imp Api request received");
+
+		Map<String, String> response = new HashMap<String, String>();
+		try {
+			List<String> users = docViewRepository.getDistinctUsers();
+			response.put("count", "success");
 		} catch (Exception e) {
 			logger.error("Error occurred while trying to process api request", e);
 			response.put("status", "fail");
