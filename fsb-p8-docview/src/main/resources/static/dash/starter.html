@@ -431,7 +431,14 @@ desired effect
             <div class="box-header">
             
               <h3 class="box-title">Doc Viewed Audit List</h3>
-              
+              <!-- tools box -->			            
+              <div class="pull-right box-tools hide">
+              <button type="button" class="btn btn-info btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fa fa-times"></i></button>
+              </div>
+              <!-- /. tools -->
               
               
               
@@ -726,7 +733,10 @@ desired effect
 		//$("#dtbox1").clone().attr("id", "newid" + i).appendTo("#dtdiv");
 		//$("#dtbox1").clone().attr("id", "newid" + i).hide().appendTo("#dtdiv").show('slow');
 		$("#dtbox1").clone().attr("id", "newid" + i).hide().insertAfter("#dtbox1").slideDown('slow');
-		$("#newid" + i + " > div > h3")[0].outerText = "HISTORY - " + $("#newid" + i + " > div > h3")[0].outerText;
+		$("#newid" + i + " > div > h3")[0].outerText = "Search History - " + $("#newid" + i + " > div > h3")[0].outerText;
+		// remove hidden class from action buttons
+		$("#newid" + i + " > div > div").removeClass("hide");
+		
 		//$(newDtbox).attr("id", "newid");
 		//$("#newid > div > h3")[0].outerText = "new title";
 		//$(newDtbox).appendTo("#dtdiv");
