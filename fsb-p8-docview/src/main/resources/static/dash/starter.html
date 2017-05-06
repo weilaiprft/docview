@@ -425,11 +425,16 @@ desired effect
       
       <!-- right col -->
       <section class="">
-        <div class="col-xs-9">                                                                                                                                           
-          <div class="box">
+        <div class="col-xs-9" id="dtdiv">
+                                                                                                                                                   
+          <div class="box" id="dtbox1">
             <div class="box-header">
             
               <h3 class="box-title">Doc Viewed Audit List</h3>
+              
+              
+              
+              
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -450,6 +455,13 @@ desired effect
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
+
+
+
+
+
+
+
           
         </div>
         <!-- /.col -->
@@ -705,8 +717,20 @@ desired effect
 	};
 	ajax2.send();
 
+	var i = 1;
 	$( "#filter" ).click(function() {
-		  
+		  debugger;
+		// clone and append before running another test
+		var newDtbox = $("#dtbox1").clone(); 
+		//$("#dtbox1").clone().appendTo("#dtdiv");
+		//$("#dtbox1").clone().attr("id", "newid" + i).appendTo("#dtdiv");
+		//$("#dtbox1").clone().attr("id", "newid" + i).hide().appendTo("#dtdiv").show('slow');
+		$("#dtbox1").clone().attr("id", "newid" + i).hide().insertAfter("#dtbox1").slideDown('slow');
+		$("#newid" + i + " > div > h3")[0].outerText = "HISTORY - " + $("#newid" + i + " > div > h3")[0].outerText;
+		//$(newDtbox).attr("id", "newid");
+		//$("#newid > div > h3")[0].outerText = "new title";
+		//$(newDtbox).appendTo("#dtdiv");
+		
 		  var loannum = $('#loannumber').val();
 		  var userid = $('#userid').val();
 		  var searchUrlBuilder = '../docview/search/';
