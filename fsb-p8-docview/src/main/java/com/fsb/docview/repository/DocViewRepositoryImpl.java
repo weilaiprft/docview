@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-import com.fsb.docview.DocViewController;
 import com.fsb.docview.model.DocView;
 
 @EnableAutoConfiguration
@@ -29,9 +28,7 @@ public class DocViewRepositoryImpl implements MyCustomRepository {
 		
 		try {
 			Query query = em.createQuery("Select DISTINCT(d.userName) from DocView d");
-			List<String> list = query.getResultList();
-			
-			List<DocView> userList = new ArrayList<DocView>();
+			List<String> list = query.getResultList();			
 												
 			for (String e : list) {
 				logger.info("user = " + e);

@@ -21,4 +21,9 @@ public interface DocViewRepository extends PagingAndSortingRepository<DocView, L
 	List<DocView> findDistinctDocViewByUserName(@Param("name") String name);
 		
 	List<DocView> findTop10ByOrderByViewedTimeDesc();
+	
+	@Query(value = "Select distinct user_name from document_viewed", nativeQuery=true)
+	List<String> useNativeQuery();
+
+	
 }
